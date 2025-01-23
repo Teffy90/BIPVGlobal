@@ -1,1 +1,2 @@
-In this file you must put the step by step to deploy the frontend
+In this file you must put the step by step to deploy the frontend. 
+this example
