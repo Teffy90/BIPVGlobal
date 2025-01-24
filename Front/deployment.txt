@@ -1,2 +1,42 @@
 In this file you must put the step by step to deploy the frontend. 
-this example
+
+Comandos para la creacion del proyecto (React), los pasos del 1 al 4 solo se realizan en una ocasion por un desarrollador para crear la estructura inicial, los demas desarrolladores solo ejecutan los pasos 5 y 6.
+
+1. Se debe tener instalado Node.js para usar los comandos de npm, video explicativo: https://www.youtube.com/watch?v=czFj5zoI5uc
+2. Se usara vite para la creacion del proyecto
+3. Para la creacion del proyecto se uso el comando "npm create vite@latest", Este comando crea la estructura inicial del proyecto, configurando todo lo necesario para empezar a desarrollar con Vite.
+4. Posteriormente vite pide que se seleccione, un nombre del proyecto, nombre del paquete, pide que se seleccione un framework y pide que se seleccione una variante dentro de ese framework, en este caso se eligio TypeScript:
+
+√ Project name: ... Front
+√ Package name: ... front
+√ Select a framework: » React
+√ Select a variant: » TypeScript + SWC
+
+Scaffolding project in C:\PRACTICA\BIPVGlobal\Front...
+
+Done. Now run:
+
+  cd Front
+  npm install
+  npm run dev
+
+5. Luego se usa el comando npm install para instalar las dependencias de desarrollo:
+
+PS C:\PRACTICA\BIPVGlobal\Front> npm install
+
+added 142 packages, and audited 143 packages in 17s
+
+40 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+6. Por ultimo se ejectua el comando npm run dev para ejecutar el servidor de desarrollo
+
+  VITE v6.0.11  ready in 254 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+
+con Ctrl + click en el enlace que se les genera en el terminal o copiando y pegando la direccion en su navegador pueden acceder al proyecto de forma local.
