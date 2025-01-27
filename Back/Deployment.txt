@@ -40,7 +40,7 @@
 6. Descargar Visual Studio Code
 	* Propósito: Utilizarlo como entorno de desarrollo para visualizar y trabajar en el proyecto.
 	* Enlace de descarga: https://code.visualstudio.com
-7. Crear el proyecto en Laravel
+7. Levantar el proyecto de Laravel en local
 	1. Abre una terminal y ejecuta el siguiente comando para crear el proyecto:
 		* composer create-project laravel/laravel NombreDelProyecto  
 
