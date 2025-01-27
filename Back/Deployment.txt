@@ -41,7 +41,9 @@
 	* Propósito: Utilizarlo como entorno de desarrollo para visualizar y trabajar en el proyecto.
 	* Enlace de descarga: https://code.visualstudio.com
 7. Levantar el proyecto de Laravel en local
-	1. Inicia el servidor de desarrollo con el comando:
+	1. Ingresa a la carpeta del proyecto:
+		* cd BIPVGlobal
+	2. Inicia el servidor de desarrollo con el comando:
 		* php artisan serve  
 	2. Accede al proyecto localmente copiando y pegando la URL generada en la terminal en tu navegador o haciendo Ctrl + clic en el enlace.
 8. Abrir el proyecto en Visual Studio Code
