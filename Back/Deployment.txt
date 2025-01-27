@@ -41,17 +41,9 @@
 	* Propósito: Utilizarlo como entorno de desarrollo para visualizar y trabajar en el proyecto.
 	* Enlace de descarga: https://code.visualstudio.com
 7. Levantar el proyecto de Laravel en local
-	1. Abre una terminal y ejecuta el siguiente comando para crear el proyecto:
-		* composer create-project laravel/laravel NombreDelProyecto  
-
-
-	2. Ingresa a la carpeta del proyecto:
-		* cd NombreDelProyecto  
-
-
-	3. Inicia el servidor de desarrollo con el comando:
+	1. Inicia el servidor de desarrollo con el comando:
 		* php artisan serve  
-	4. Accede al proyecto localmente copiando y pegando la URL generada en la terminal en tu navegador o haciendo Ctrl + clic en el enlace.
+	2. Accede al proyecto localmente copiando y pegando la URL generada en la terminal en tu navegador o haciendo Ctrl + clic en el enlace.
 8. Abrir el proyecto en Visual Studio Code
 	Desde la terminal, ejecuta el siguiente comando para abrir el proyecto en VS Code:
 		* code .
