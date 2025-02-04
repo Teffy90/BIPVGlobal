@@ -20,6 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'last_login'
     ];
 
     /**
@@ -32,16 +34,31 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    
+  // Agregar cast para last_login
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_login' => 'datetime'
         ];
     }
+
+    // Relación con proyectos
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class, 'user_id');
+    }
+
+    // Método para actualizar último login
+    public function updateLastLogin()
+    {
+        $this->update(['last_login' => now()]);
+        $this->timestamps = false; // Evita que actualice el campo updated_at
+        $this->last_login = now();
+        $this->save();
+        $this->timestamps = true;
+    }
 }
+
