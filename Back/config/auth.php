@@ -91,13 +91,13 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
-        ],
+    'users' => [
+        'provider' => 'users',
+        'table' => 'password_resets',
+        'expire' => 60, // Tiempo de expiración del token (en minutos)
+        'throttle' => 60, // Tiempo de espera entre solicitudes (en segundos)
     ],
+],
 
     /*
     |--------------------------------------------------------------------------

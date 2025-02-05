@@ -21,4 +21,15 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
+    
+    protected $listen = [
+        'Illuminate\Auth\Events\Login' => [
+            'App\Listeners\UpdateLastLogin',
+        ],
+    ];
+
+    public function handle(Login $event)
+{
+    $event->user->updateLastLogin();
+}
 }
