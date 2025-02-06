@@ -3,18 +3,39 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\QuotationController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
-Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
-    Route::get('/admin/projects', [AdminController::class, 'allProjects']);
-});
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('projects', ProjectController::class)
-        ->middleware('can:create,App\Models\Project');
-});
-
+// Rutas públicas (sin autenticación)
 Route::prefix('auth')->group(function () {
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-         ->middleware('auth:sanctum');
+    Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login');
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    Route::post('register', [RegisteredUserController::class, 'store'])->name('register');
+});
+
+// Rutas protegidas por autenticación (Sanctum)
+Route::middleware(['auth:sanctum'])->group(function () {
+    // Rutas de proyectos
+    Route::prefix('projects')->group(function () {
+        Route::get('/', [ProjectController::class, 'index'])->name('projects.index');
+        Route::post('/', [ProjectController::class, 'store'])->name('projects.store');
+        Route::get('/{project}', [ProjectController::class, 'show'])->name('projects.show');
+        Route::put('/{project}', [ProjectController::class, 'update'])->name('projects.update');
+        Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
+    });
+
+    // Rutas de cotizaciones
+    Route::prefix('quotations')->group(function () {
+        Route::get('/', [QuotationController::class, 'index'])->name('quotations.index');
+        Route::post('/', [QuotationController::class, 'store'])->name('quotations.store');
+        Route::get('/{quotation}', [QuotationController::class, 'show'])->name('quotations.show');
+        Route::put('/{quotation}', [QuotationController::class, 'update'])->name('quotations.update');
+        Route::delete('/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.destroy');
+    });
+
+    // Rutas de administración (solo para administradores)
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get('/admin/projects', [ProjectController::class, 'allProjects'])->name('admin.projects.index');
+    });
+   
 });
