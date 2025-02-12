@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\QuotationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 
 // Rutas públicas (sin autenticación)
@@ -39,3 +41,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
    
 });
+
+      // Rutas de restablecimiento de contraseña
+      Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+      Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+      Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+      Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
