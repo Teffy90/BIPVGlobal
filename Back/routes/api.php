@@ -6,7 +6,10 @@ use App\Http\Controllers\API\QuotationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\PvWattsController;
 
+/// ruta para accerder al pvwatscontroller
+Route::get('/pvwatts', [PvWattsController::class, 'getPvWattsData']);
 
 // Rutas públicas (sin autenticación)
 Route::prefix('auth')->group(function () {
