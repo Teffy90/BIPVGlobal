@@ -4,9 +4,17 @@ namespace App\Services;
 
 use App\Models\Project;
 use App\Models\MaterialProperty;
+use App\Http\Controllers\PvWattsController;
 
 class QuotationService
 {
+    protected $pvWattsController;
+
+    public function __construct(PvWattsController $pvWattsController)
+    {
+        $this->pvWattsController = $pvWattsController;
+    }
+
     /**
      * Calcula la cotización completa del proyecto.
      *
@@ -33,14 +41,20 @@ class QuotationService
             $systemCapacity += $dbMaterial->efficiency * $material['quantity'];
         }
 
+        // Obtener datos de PVWatts
+        try {
+            $pvWattsData = $this->pvWattsController->getPvWattsData($systemCapacity, $project->lat, $project->lon);
+            $annualProduction = $pvWattsData['annual_production_kwh'];
+        } catch (\Exception $e) {
+            throw new \Exception("Error al obtener datos de PVWatts: " . $e->getMessage());
+        }
+
         // Calcular los campos adicionales
         $efficiency = $this->calculateEfficiency($systemCapacity, $project);
         $projectCost = $this->calculateProjectCost($totalCost, $project);
-        $annualSavings = $this->calculateAnnualSavings($systemCapacity, $project);
+        $annualSavings = $annualProduction; // Usar la producción anual de PVWatts
         $monthlySavings = $this->calculateMonthlySavings($annualSavings);
         $investmentReturn = $this->calculateInvestmentReturn($projectCost, $annualSavings);
-        $numberOfRoofs = $this->calculateNumberOfRoofs($systemCapacity, $project);
-        $numberOfFacades = $this->calculateNumberOfFacades($systemCapacity, $project);
         $annualProfitability = $this->calculateAnnualProfitability($annualSavings, $projectCost);
         $monthlyProfitability = $this->calculateMonthlyProfitability($annualProfitability);
 
@@ -53,8 +67,8 @@ class QuotationService
             'annual_savings' => $annualSavings,
             'monthly_savings' => $monthlySavings,
             'investment_return' => $investmentReturn,
-            'number_of_roofs' => $numberOfRoofs,
-            'number_of_facades' => $numberOfFacades,
+            'number_of_roofs' => $data['number_of_roofs'] ?? 0,
+            'number_of_facades' => $data['number_of_facades'] ?? 0,
             'annual_profitability' => $annualProfitability,
             'monthly_profitability' => $monthlyProfitability,
             'materials' => $materialsData,
@@ -70,7 +84,6 @@ class QuotationService
      */
     private function calculateEfficiency(float $systemCapacity, Project $project): float
     {
-        // Lógica personalizada según propiedades del proyecto
         $baseEfficiency = $systemCapacity * 0.85; // Ejemplo básico
         return $baseEfficiency * (1 + ($project->efficiency / 100));
     }
@@ -84,21 +97,7 @@ class QuotationService
      */
     private function calculateProjectCost(float $totalCost, Project $project): float
     {
-        // Fórmula de ejemplo: Costo total + costos adicionales del proyecto
         return $totalCost + $project->project_cost;
-    }
-
-    /**
-     * Calcula la energía generada al año.
-     *
-     * @param  float  $systemCapacity
-     * @param  Project  $project
-     * @return float
-     */
-    private function calculateAnnualSavings(float $systemCapacity, Project $project): float
-    {
-        // Fórmula de ejemplo: Energía anual = Capacidad del sistema * Horas de sol al día * 365
-        return $systemCapacity * $project->sun_hours_per_day * 365;
     }
 
     /**
@@ -109,7 +108,6 @@ class QuotationService
      */
     private function calculateMonthlySavings(float $annualSavings): float
     {
-        // Fórmula de ejemplo: Energía mensual = Energía anual / 12
         return $annualSavings / 12;
     }
 
@@ -122,34 +120,7 @@ class QuotationService
      */
     private function calculateInvestmentReturn(float $projectCost, float $annualSavings): float
     {
-        // Fórmula de ejemplo: ROI = (Ahorro anual / Costo del proyecto) * 100
         return ($annualSavings / $projectCost) * 100;
-    }
-
-    /**
-     * Calcula el número de techos necesarios.
-     *
-     * @param  float  $systemCapacity
-     * @param  Project  $project
-     * @return int
-     */
-    private function calculateNumberOfRoofs(float $systemCapacity, Project $project): int
-    {
-        // Fórmula de ejemplo: Número de techos = Capacidad del sistema / Capacidad por techo
-        return (int) ceil($systemCapacity / $project->roof_capacity);
-    }
-
-    /**
-     * Calcula el número de fachadas necesarias.
-     *
-     * @param  float  $systemCapacity
-     * @param  Project  $project
-     * @return int
-     */
-    private function calculateNumberOfFacades(float $systemCapacity, Project $project): int
-    {
-        // Fórmula de ejemplo: Número de fachadas = Capacidad del sistema / Capacidad por fachada
-        return (int) ceil($systemCapacity / $project->facade_capacity);
     }
 
     /**
@@ -161,7 +132,6 @@ class QuotationService
      */
     private function calculateAnnualProfitability(float $annualSavings, float $projectCost): float
     {
-        // Fórmula de ejemplo: Rentabilidad anual = (Ahorro anual / Costo del proyecto) * 100
         return ($annualSavings / $projectCost) * 100;
     }
 
@@ -173,7 +143,6 @@ class QuotationService
      */
     private function calculateMonthlyProfitability(float $annualProfitability): float
     {
-        // Fórmula de ejemplo: Rentabilidad mensual = Rentabilidad anual / 12
         return $annualProfitability / 12;
     }
 }
