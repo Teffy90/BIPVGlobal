@@ -18,19 +18,14 @@ const Navbar: React.FC = () => {
         <ul className="flex space-x-4 text-white">
           <li>
             <Link to="/login" className={`p-2 rounded ${isActive('/login')}`}>
-              Login
+              Iniciar Sesión
             </Link>
           </li>
           <li>
             <Link to="/register" className={`p-2 rounded ${isActive('/register')}`}>
-              Register
+              Registrarse
             </Link>
-          </li>
-          <li>
-            <Link to="/about" className={`p-2 rounded ${isActive('/about')}`}>
-              About
-            </Link>
-          </li>
+          </li> 
         </ul>
       </div>
     </nav>

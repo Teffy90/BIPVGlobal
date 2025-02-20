@@ -2,10 +2,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import Login from "./views/Login";
 import Register from "./views/Register";
+import ForgotPassword from "./views/ForgotPassword";
 import NotFound from "./views/NotFound";
 import App from './App';
 import InfoGeneral from './views/InfoGeneral';
-import About from './views/About'; // Importa el nuevo componente About
 
 const router = createBrowserRouter([
   {
@@ -25,8 +25,8 @@ const router = createBrowserRouter([
         element: <Register />
       },
       {
-        path: "about", // Ruta para About
-        element: <About /> 
+        path: "forgot-password",
+        element: <ForgotPassword />
       }
     ]
   },
