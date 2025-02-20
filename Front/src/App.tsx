@@ -1,3 +1,4 @@
+// src/App.tsx
 import { Outlet } from "react-router-dom"; // Esto renderizará las rutas hijas
 import Navbar from "./components/Navbar";
 

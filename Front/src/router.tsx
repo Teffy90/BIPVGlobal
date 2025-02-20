@@ -1,14 +1,21 @@
+// src/router.tsx
 import { createBrowserRouter } from "react-router-dom";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import NotFound from "./views/NotFound";
-import App from './App'; // Importa tu componente principal
+import App from './App';
+import InfoGeneral from './views/InfoGeneral';
+import About from './views/About'; // Importa el nuevo componente About
 
 const router = createBrowserRouter([
   {
-    path: "/", // Ruta principal
-    element: <App />, // Componente principal
+    path: "/",
+    element: <App />, 
     children: [
+      {
+        path: "/",
+        element: <InfoGeneral />
+      },
       {
         path: "login",
         element: <Login />
@@ -16,11 +23,15 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />
+      },
+      {
+        path: "about", // Ruta para About
+        element: <About /> 
       }
     ]
   },
   {
-    path: "*", // Ruta para cualquier otra URL no definida
+    path: "*",
     element: <NotFound />
   }
 ]);
