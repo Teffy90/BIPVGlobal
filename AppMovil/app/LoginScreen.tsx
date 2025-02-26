@@ -1,17 +1,17 @@
-// app/LoginScreen.tsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, Alert } from 'react-native';
 import { Link } from 'expo-router'; // Asegúrate de tener expo-router instalado
+import { LinearGradient } from 'expo-linear-gradient'; // Importar el componente de degradado
 
 // Colores
 const colors = {
-  primary: '#003A79',
-  secondary: '#002A57',
-  accent: '#609DE1',
+  primary: '#003A79', // Azul Energía
+  secondary: '#002A57', // Azul Profundo
+  accent: '#609DE1', // Azul Claro
   white: '#FFFFFF',
-  gray: '#6B7073',
+  gray: '#6B7073', // Gris Corporativo
   lightGray: '#D3D3D3',
-  green: '#228B22',
+  green: '#228B22', // Verde Sostenibilidad
 };
 
 const LoginScreen = () => {
@@ -19,55 +19,57 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Aquí puedes agregar la lógica para iniciar sesión
-    // Por ejemplo, llamar a una API para autenticar al usuario
     if (email && password) {
       Alert.alert('Inicio de sesión exitoso', `Bienvenido, ${email}!`);
-      // Navegar a la pantalla principal o de proyectos
     } else {
       Alert.alert('Error', 'Por favor, completa todos los campos.');
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Iniciar Sesión</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Correo Electrónico"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Contraseña"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <Pressable style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Iniciar Sesión</Text>
-      </Pressable>
-      <View style={styles.linkContainer}>
-        <Link href="/RegisterScreen" asChild>
-          <Pressable>
-            <Text style={styles.linkText}>¿No tienes una cuenta? Regístrate</Text>
-          </Pressable>
-        </Link>
-        <Link href="/RecoverPasswordScreen" asChild>
-          <Pressable>
-            <Text style={styles.linkText}>¿Olvidaste tu contraseña?</Text>
-          </Pressable>
-        </Link>
-        <Link href="/" asChild>
-          <Pressable>
-            <Text style={styles.linkText}>Inicio</Text>
-          </Pressable>
-        </Link>
+    <LinearGradient
+      colors={[colors.primary, colors.accent]} // Degradado entre el azul y azul claro
+      style={styles.container}
+    >
+      <View style={styles.overlay}>
+        <Text style={styles.title}>Iniciar Sesión</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Correo Electrónico"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Contraseña"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        <Pressable style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Iniciar Sesión</Text>
+        </Pressable>
+        <View style={styles.linkContainer}>
+          <Link href="/RegisterScreen" asChild>
+            <Pressable>
+              <Text style={styles.linkText}>¿No tienes una cuenta? Regístrate</Text>
+            </Pressable>
+          </Link>
+          <Link href="/RecoverPasswordScreen" asChild>
+            <Pressable>
+              <Text style={styles.linkText}>¿Olvidaste tu contraseña?</Text>
+            </Pressable>
+          </Link>
+          <Link href="/" asChild>
+            <Pressable>
+              <Text style={styles.linkText}>Inicio</Text>
+            </Pressable>
+          </Link>
+        </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -76,15 +78,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.lightGray,
+    padding: 20,
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
     padding: 20,
   },
   title: {
-    fontSize: 28,
+    fontSize: 36,
     fontWeight: 'bold',
-    color: colors.primary,
+    fontFamily: 'Montserrat',
+    color: colors.white, // Color blanco para el texto
     marginBottom: 20,
     textAlign: 'center',
+    textShadowColor: colors.secondary, // Sombra para resaltar el texto
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 10,
   },
   input: {
     height: 40,
@@ -94,6 +106,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     width: '100%',
     borderRadius: 5,
+    backgroundColor: colors.white, // Fondo blanco para los inputs
+    opacity: 0.9, // Sutil opacidad para que no se mezcle tanto con el fondo
   },
   button: {
     backgroundColor: colors.primary,
@@ -102,20 +116,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 10,
     width: '100%',
+    shadowColor: colors.secondary,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
   },
   buttonText: {
     color: colors.white,
     fontSize: 18,
     fontWeight: 'bold',
+    fontFamily: 'Montserrat',
   },
   linkContainer: {
     marginTop: 20,
     alignItems: 'center',
   },
   linkText: {
-    color: colors.accent,
-    fontSize: 16,
+    color: colors.white, // Ahora el color es blanco
+    fontSize: 18, // Aumentamos el tamaño de la fuente
     marginVertical: 5,
+    fontFamily: 'Roboto',
+    textDecorationLine: 'underline', // Subrayamos los enlaces para hacerlos más visibles
+    fontWeight: 'bold', // Hacemos que los enlaces sean más prominentes
+    marginBottom: 10, // Añadimos un poco de espacio entre los enlaces
   },
 });
 
