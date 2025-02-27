@@ -15,7 +15,7 @@ Route::get('/pvwatts', [PvWattsController::class, 'getPvWattsData']);
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login');
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-    Route::post('register', [RegisteredUserController::class, 'store'])->name('register');
+    Route::post('register', [RegisteredController::class, 'store'])->name('register');
 });
 
 // Rutas protegidas por autenticación (Sanctum)
