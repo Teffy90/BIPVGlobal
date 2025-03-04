@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, Alert } from 'react-native';
-import { Link } from 'expo-router'; // Asegúrate de tener expo-router instalado
+import { Link, useRouter } from 'expo-router'; // Asegúrate de tener expo-router instalado
 import { LinearGradient } from 'expo-linear-gradient'; // Importar el componente de degradado
+import axios from 'axios';
 
 // Colores
 const colors = {
@@ -14,25 +15,37 @@ const colors = {
 };
 
 const RegisterScreen = () => {
-  const [fullName, setFullName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const router = useRouter();
 
-  const handleRegister = () => {
-    if (!fullName || !email || !password || !confirmPassword) {
+  const handleRegister = async () => {
+    if (!name || !email || !password || !passwordConfirmation) {
       Alert.alert('Error', 'Por favor, completa todos los campos.');
       return;
     }
 
-    if (password !== confirmPassword) {
+    if (password !== passwordConfirmation) {
       Alert.alert('Error', 'Las contraseñas no coinciden.');
       return;
     }
 
-    // Aquí puedes agregar la lógica para registrar al usuario
-    Alert.alert('Registro exitoso', `Bienvenido, ${fullName}!`);
-    // Navegar a la pantalla principal o de inicio de sesión
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/auth/register', {
+        name,
+        email,
+        password,
+        password_confirmation: passwordConfirmation,
+      });
+
+      Alert.alert('Registro exitoso', `Bienvenido, ${name}!`);
+      router.push('/LoginScreen'); // Navegar a la pantalla de inicio de sesión
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'No se pudo registrar. Inténtalo de nuevo.');
+    }
   };
 
   return (
@@ -45,8 +58,8 @@ const RegisterScreen = () => {
         <TextInput
           style={styles.input}
           placeholder="Nombre Completo"
-          value={fullName}
-          onChangeText={setFullName}
+          value={name}
+          onChangeText={setName}
         />
         <TextInput
           style={styles.input}
@@ -66,8 +79,8 @@ const RegisterScreen = () => {
         <TextInput
           style={styles.input}
           placeholder="Confirmar Contraseña"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
+          value={passwordConfirmation}
+          onChangeText={setPasswordConfirmation}
           secureTextEntry
         />
         <Pressable style={styles.button} onPress={handleRegister}>
